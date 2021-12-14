@@ -9,4 +9,5 @@ Please take a look [the official document](https://go.dev/doc/install).
 
 ## Index
 
+- [agent mysql integration](./agent_mysql_integration/README.md)
 - [host agent log collection](./host_agent_log_collection/README.md)

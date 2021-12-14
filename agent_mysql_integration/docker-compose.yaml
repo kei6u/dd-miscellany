@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  agent:
+    image: gcr.io/datadoghq/agent:7
+    environment:
+      DD_API_KEY: "" # TODO: set your api key
+    volumes:
+      - ./mysql.conf.yaml:/conf.d/mysql.d/conf.yaml
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /proc/:/host/proc/:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - default
+  mysql:
+    image: bitnami/mysql
+    ports:
+      - 3306:3306
+    restart: always
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+    networks:
+      - default
