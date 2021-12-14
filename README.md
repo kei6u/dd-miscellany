@@ -1,4 +1,4 @@
-# Datadog Miscellany
+# DD Miscellany
 
 This repository is the collection of notes, instructions to use Datadog.
 
