@@ -32,32 +32,35 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	defer f.Close()
 
 	msgs := strings.Split(messages, ",")
 
-	for {
-		if ctx.Err() != nil {
-			break
-		}
-		for _, msg := range msgs {
-			n, err := appendLog(f, msg)
-			if silent {
-				continue
+	ticker := time.NewTicker(time.Duration(duration) * time.Millisecond)
+	go func() {
+		for {
+			select {
+			case <-ctx.Done():
+				break
+			case <-ticker.C:
+				for _, msg := range msgs {
+					n, err := f.WriteString(fmt.Sprintf(msgFormat, msg))
+					if silent {
+						continue
+					}
+					if err != nil {
+						log.Printf("failed to append %s to log file: %s\n", msg, err)
+						continue
+					}
+					log.Printf("write %d bytes in log file\n", n)
+				}
 			}
-			if err != nil {
-				log.Printf("failed to append %s to log file: %s\n", msg, err)
-				continue
-			}
-			log.Printf("write %d bytes in log file\n", n)
 		}
-		time.Sleep(time.Duration(duration) * time.Millisecond)
-	}
+	}()
+
+	<-ctx.Done()
+	_ = f.Close()
+	ticker.Stop()
 }
 
 var msgFormat = `%s
 `
-
-func appendLog(f *os.File, msg string) (n int, err error) {
-	return f.WriteString(fmt.Sprintf(msgFormat, msg))
-}
