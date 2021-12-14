@@ -4,8 +4,8 @@ This repository is the collection of notes, instructions to use Datadog.
 
 ## Dependency
 
-This repository requires to install [Go](https://github.com/golang/go) to run scripts.
-Please take a look [the official document](https://go.dev/doc/install).
+- [Go](https://github.com/golang/go) to run scripts. [Installation guide](https://go.dev/doc/install).
+- [Docker](https://www.docker.com/) to run containers. [Installation guide](https://docs.docker.com/get-docker/).
 
 ## Index
 
