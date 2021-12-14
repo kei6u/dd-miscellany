@@ -43,15 +43,15 @@ func main() {
 				break
 			case <-ticker.C:
 				for _, msg := range msgs {
-					n, err := f.WriteString(fmt.Sprintf(msgFormat, msg))
+					_, err := f.WriteString(fmt.Sprintf(msgFormat, msg))
 					if silent {
 						continue
 					}
 					if err != nil {
-						log.Printf("failed to append %s to log file: %s\n", msg, err)
+						log.Printf("failed to append %s to the log file: %s\n", msg, err)
 						continue
 					}
-					log.Printf("write %d bytes in log file\n", n)
+					log.Printf("write %s in the log file\n", msg)
 				}
 			}
 		}
