@@ -10,4 +10,5 @@ This repository is the collection of notes, instructions to use Datadog.
 ## Index
 
 - [agent mysql integration](./agent_mysql_integration/README.md)
+- [custom agent check](./custom_agent_check/README.md)
 - [host agent log collection](./host_agent_log_collection/README.md)
