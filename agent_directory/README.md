@@ -11,17 +11,9 @@ docker run -d --name dd-agent \
 -v /proc/:/host/proc/:ro \
 -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
 -v $(pwd)/conf.yaml:/conf.d/directory.d/conf.yaml \
--v $(pwd)/alice/dir:/var/run/alice/dir \
--v $(pwd)/bob/dir:/var/run/bob/dir \
--v $(pwd)/john/dir:/var/run/john/dir \
+-v $(pwd)/test_alice/dir:/var/run/alice/dir \
+-v $(pwd)/test_bob/dir:/var/run/bob/dir \
+-v $(pwd)/test_john/dir:/var/run/john/dir \
 -e DD_API_KEY=${DD_API_KEY} \
 gcr.io/datadoghq/agent:7
-```
-
-Ignore changes in `test.log`.
-
-```bash
-git update-index --assume-unchanged alice
-git update-index --assume-unchanged bob
-git update-index --assume-unchanged john
 ```
