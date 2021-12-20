@@ -2,7 +2,7 @@
 
 This guide is based on [Events with a Custom Agent Check](https://docs.datadoghq.com/events/guides/agent/#submission).
 
-## On your machine
+## Docker
 
 ### Run Agent as a container
 

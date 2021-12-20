@@ -3,7 +3,7 @@
 This guide is based on [Host Agent Log collection](https://docs.datadoghq.com/agent/logs/?tab=tailfiles).
 You can configure Datadog Agent to collect logs from the specified log files.
 
-## On your machine
+## Docker
 
 ### Run Agent as a container
 

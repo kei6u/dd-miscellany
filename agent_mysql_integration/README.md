@@ -2,7 +2,7 @@
 
 This instruction is based on [Integration/MySQL](https://docs.datadoghq.com/integrations/mysql/?tab=host) to get `mysql.*` metrics.
 
-## On your machine
+## Docker
 
 Run Agent and MySQL containers.
 
