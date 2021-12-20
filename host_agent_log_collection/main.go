@@ -28,7 +28,7 @@ func main() {
 		cancel()
 	}()
 
-	f, err := os.OpenFile("test.log", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	f, err := os.Create("test.log")
 	if err != nil {
 		log.Fatalln(err)
 	}

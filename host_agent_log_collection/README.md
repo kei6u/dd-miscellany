@@ -27,14 +27,8 @@ gcr.io/datadoghq/agent:7
 
 ### Write messages to the log file
 
-Ignore changes in `test.log`.
-
-```shell
-git update-index --assume-unchanged test.log
-```
-
 Write messages to the log file.
 
-```shell
+```bash
 go run main.go --duration-ms=100 --silent --messages="hello,こんにちは,Hola"
 ```
