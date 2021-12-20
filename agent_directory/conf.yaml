@@ -1,0 +1,8 @@
+init_config:
+
+instances:
+  - directory: /var/run
+    recursive: true
+    exclude_dirs:
+      - alice
+      - bob
