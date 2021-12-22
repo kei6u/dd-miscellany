@@ -1,0 +1,12 @@
+{ "level": "error", "message": "error in dev", "dd.env": "dev", "author": "keisuke", "dd.service": "example_log_generator", "dd.source": "go" }
+{ "level": "error", "message": "error in prod", "dd.env": "prod", "author": "keisuke", "dd.service": "example_log_generator", "dd.source": "python" }
+{ "level": "info", "message": "info in dev", "dd.env": "dev", "author": "keisuke", "dd.service": "example_log_generator", "dd.source": "go" }
+{ "level": "info", "message": "info in prod", "dd.env": "prod", "author": "keisuke", "dd.service": "example_log_generator", "dd.source": "python" }
+{ "level": "warn", "message": "warn in dev", "dd.env": "dev", "author": "keisuke", "dd.service": "example_log_generator", "dd.source": "go" }
+{ "level": "warn", "message": "warn in prod", "dd.env": "prod", "author": "keisuke", "dd.service": "example_log_generator", "dd.source": "python" }
+{ "level": "error", "message": "error in dev", "dd.env": "dev", "author": "umegaki", "dd.service": "example_log_generator", "dd.source": "python" }
+{ "level": "error", "message": "error in prod", "dd.env": "prod", "author": "umegaki", "dd.service": "example_log_generator", "dd.source": "python" }
+{ "level": "info", "message": "info in dev", "dd.env": "dev", "author": "umegaki", "dd.service": "example_log_generator", "dd.source": "go" }
+{ "level": "info", "message": "info in prod", "dd.env": "prod", "author": "umegaki", "dd.service": "example_log_generator", "dd.source": "python" }
+{ "level": "warn", "message": "warn in dev", "dd.env": "dev", "author": "umegaki", "dd.service": "example_log_generator", "dd.source": "go" }
+{ "level": "warn", "message": "warn in prod", "dd.env": "prod", "author": "umegaki", "dd.service": "example_log_generator", "dd.source": "python" }

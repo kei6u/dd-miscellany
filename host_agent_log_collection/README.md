@@ -25,10 +25,15 @@ docker run -d --name dd-agent \
 gcr.io/datadoghq/agent:7
 ```
 
+### Write logs in `log.txt`
+
+See [log.txt](./log.txt).
+Messages in this file will be written to `test.log` by Go.
+
 ### Write messages to the log file
 
 Write messages to the log file.
 
 ```bash
-go run main.go --duration-ms=100 --silent --messages="hello,こんにちは,Hola"
+go run main.go --duration-ms=100
 ```
