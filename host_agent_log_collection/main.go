@@ -12,7 +12,9 @@ import (
 
 func main() {
 	var duration int
+	var file string
 	flag.IntVar(&duration, "duration-ms", 1000, "duration to sleep before append log in milliseconds")
+	flag.StringVar(&file, "file", "", "file path to the content for logging")
 	flag.Parse()
 
 	sig := make(chan os.Signal, 1)
@@ -27,7 +29,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	b, err := os.ReadFile("log.txt")
+	b, err := os.ReadFile(file)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -37,7 +39,7 @@ func main() {
 		for {
 			select {
 			case <-ctx.Done():
-				break
+				return
 			case <-ticker.C:
 				_, err := f.Write(b)
 				if err != nil {

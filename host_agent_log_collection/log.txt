@@ -1,12 +1,15 @@
-{ "level": "error", "message": "error in dev", "dd.env": "dev", "author": "keisuke", "dd.service": "example_log_generator", "dd.source": "go" }
-{ "level": "error", "message": "error in prod", "dd.env": "prod", "author": "keisuke", "dd.service": "example_log_generator", "dd.source": "python" }
-{ "level": "info", "message": "info in dev", "dd.env": "dev", "author": "keisuke", "dd.service": "example_log_generator", "dd.source": "go" }
-{ "level": "info", "message": "info in prod", "dd.env": "prod", "author": "keisuke", "dd.service": "example_log_generator", "dd.source": "python" }
-{ "level": "warn", "message": "warn in dev", "dd.env": "dev", "author": "keisuke", "dd.service": "example_log_generator", "dd.source": "go" }
-{ "level": "warn", "message": "warn in prod", "dd.env": "prod", "author": "keisuke", "dd.service": "example_log_generator", "dd.source": "python" }
-{ "level": "error", "message": "error in dev", "dd.env": "dev", "author": "umegaki", "dd.service": "example_log_generator", "dd.source": "python" }
-{ "level": "error", "message": "error in prod", "dd.env": "prod", "author": "umegaki", "dd.service": "example_log_generator", "dd.source": "python" }
-{ "level": "info", "message": "info in dev", "dd.env": "dev", "author": "umegaki", "dd.service": "example_log_generator", "dd.source": "go" }
-{ "level": "info", "message": "info in prod", "dd.env": "prod", "author": "umegaki", "dd.service": "example_log_generator", "dd.source": "python" }
-{ "level": "warn", "message": "warn in dev", "dd.env": "dev", "author": "umegaki", "dd.service": "example_log_generator", "dd.source": "go" }
-{ "level": "warn", "message": "warn in prod", "dd.env": "prod", "author": "umegaki", "dd.service": "example_log_generator", "dd.source": "python" }
+{ "duration": 100, "message": "test - 1", "http": { "url": "/1" } }
+{ "duration": 190, "message": "test - 1", "http": { "url": "/1" } }
+{ "duration": 200, "message": "test - 1", "http": { "url": "/1" } }
+{ "duration": 675, "message": "test - 1", "http": { "url": "/1" } }
+{ "duration": 350, "message": "test - 1", "http": { "url": "/1" } }
+{ "duration": 630, "message": "test - 1", "http": { "url": "/1" } }
+{ "duration": 100, "message": "test - 2", "http": { "url": "/2" } }
+{ "duration": 125, "message": "test - 2", "http": { "url": "/2" } }
+{ "duration": 175, "message": "test - 2", "http": { "url": "/2" } }
+{ "duration": 200, "message": "test - 3", "http": { "url": "/3" } }
+{ "duration": 525, "message": "test - 3", "http": { "url": "/3" } }
+{ "duration": 375, "message": "test - 3", "http": { "url": "/3" } }
+{ "duration": 1000, "message": "test - 4", "http": { "url": "/4" } }
+{ "duration": 1050, "message": "test - 4", "http": { "url": "/4" } }
+{ "duration": 1450, "message": "test - 4", "http": { "url": "/4" } }
