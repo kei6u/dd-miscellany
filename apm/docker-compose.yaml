@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  datadog-agent:
+    image: gcr.io/datadoghq/agent:7
+    environment:
+      DD_API_KEY: "" # TODO: set your api key
+      DD_APM_ENABLED: true
+      DD_APM_NON_LOCAL_TRAFFIC: true
+    volumes:
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /proc/:/host/proc/:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - default
+  span-generator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      DD_AGENT_HOST: datadog-agent
+      DD_TRACE_AGENT_PORT: 8126
+      DD_SERVICE: span-generator
+    networks:
+      - default
