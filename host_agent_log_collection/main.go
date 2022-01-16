@@ -8,6 +8,8 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/fsnotify/fsnotify"
 )
 
 func main() {
@@ -34,6 +36,37 @@ func main() {
 		log.Fatalln(err)
 	}
 
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	if err := watcher.Add(file); err != nil {
+		log.Fatalln(err)
+	}
+
+	go func() {
+		for {
+			select {
+			case event, ok := <-watcher.Events:
+				if !ok {
+					return
+				}
+				if event.Op&fsnotify.Write == fsnotify.Write {
+					b, err = os.ReadFile(file)
+					if err != nil {
+						log.Println(err)
+						return
+					}
+				}
+			case err, ok := <-watcher.Errors:
+				if !ok {
+					return
+				}
+				log.Println(err)
+			}
+		}
+	}()
+
 	ticker := time.NewTicker(time.Duration(duration) * time.Millisecond)
 	go func() {
 		for {
@@ -52,4 +85,5 @@ func main() {
 	<-ctx.Done()
 	_ = f.Close()
 	ticker.Stop()
+	watcher.Close()
 }
