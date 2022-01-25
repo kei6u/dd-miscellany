@@ -29,8 +29,8 @@ jobs:
       - name: Build and push gateway Docker image
         uses: docker/build-push-action@v2
         with:
-          context: .
-          file: ./dogstatsd_client/Dockerfile
+          context: ./dogstatsd_client
+          file: Dockerfile
           push: true
           tags: ${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
