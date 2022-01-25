@@ -26,7 +26,7 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_DOGSTATSD_CLIENT }}
-      - name: Build and push gateway Docker image
+      - name: Build and push dogstatsd_client Docker image
         uses: docker/build-push-action@v2
         with:
           context: ./dogstatsd_client
