@@ -17,5 +17,5 @@ Any files or directories which starts with `test` will be ignored. See [.gitigno
 - [agent mysql integration](./agent_mysql_integration/README.md)
 - [apm](./apm/README.md)
 - [custom agent check](./custom_agent_check/README.md)
-- [custom metrics dogstatsd](./custom_metrics_dogstatsd/README.md)
 - [host agent log collection](./host_agent_log_collection/README.md)
+- [dogstatsd client](./dogstatsd_client/README.md)
