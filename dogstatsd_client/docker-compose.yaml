@@ -17,5 +17,7 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
+    environment:
+      AGENT_ADDR: datadog-agent:8125
     networks:
       - default

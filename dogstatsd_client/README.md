@@ -2,6 +2,8 @@
 
 This note is based on https://docs.datadoghq.com/metrics/dogstatsd_metrics_submission/
 
+## Docker
+
 Set the Datadog API key to `docker-compose.yaml` first.
 
 ```bash
