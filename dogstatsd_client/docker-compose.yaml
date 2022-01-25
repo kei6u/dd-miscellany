@@ -12,7 +12,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - default
-  proxy:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
