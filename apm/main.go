@@ -20,6 +20,7 @@ func main() {
 	tracer.Start(
 		tracer.WithAgentAddr("datadog-agent:8126"),
 		tracer.WithAnalyticsRate(1.0),
+		tracer.WithLogStartup(true),
 	)
 	defer tracer.Stop()
 

@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	go.uber.org/zap v1.20.0
-	gopkg.in/DataDog/dd-trace-go.v1 v1.35.0
+	gopkg.in/DataDog/dd-trace-go.v1 v1.36.0
 )
 
 require (
