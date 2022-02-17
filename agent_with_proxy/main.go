@@ -52,6 +52,6 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		h.Error("read request body", zap.Error(err))
 		return
 	}
-	h.Info("request body in JSON", zap.String("body", string(b)))
+	h.Info("read request body", zap.String("body", string(b)))
 	w.WriteHeader(http.StatusBadGateway)
 }
