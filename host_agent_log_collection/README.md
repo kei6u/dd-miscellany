@@ -35,5 +35,5 @@ Messages in this file will be written to `test.log` by Go.
 Write messages to the log file.
 
 ```bash
-go run main.go --duration-ms=100
+go run main.go --duration-ms=100 --file=log.txt
 ```
