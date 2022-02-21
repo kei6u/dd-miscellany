@@ -1,4 +1,4 @@
-module github.com/kei6u/dd-miscellany/dog_dialog
+module github.com/keisku/dd-miscellany/dog_dialog
 
 go 1.17
 

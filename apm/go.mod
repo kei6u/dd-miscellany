@@ -1,4 +1,4 @@
-module github.com/kei6u/dd-miscellany/apm
+module github.com/keisku/dd-miscellany/apm
 
 go 1.17
 

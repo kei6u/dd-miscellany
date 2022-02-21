@@ -1,4 +1,4 @@
-module github.com/kei6u/dd-miscellany/proxy_agent/proxy
+module github.com/keisku/dd-miscellany/proxy_agent/proxy
 
 go 1.17
 

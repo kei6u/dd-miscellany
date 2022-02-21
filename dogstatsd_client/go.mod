@@ -1,4 +1,4 @@
-module github.com/kei6u/dd-miscellany/dogstatsd_client
+module github.com/keisku/dd-miscellany/dogstatsd_client
 
 go 1.17
 
