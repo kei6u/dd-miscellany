@@ -2,12 +2,14 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"io"
-	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"go.uber.org/zap"
 )
@@ -15,43 +17,82 @@ import (
 func main() {
 	logger, _ := zap.NewProduction()
 	defer logger.Sync()
-	c := make(chan os.Signal, 1)
 
-	signal.Notify(c, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
-	ctx, cancel := context.WithCancel(context.Background())
+	sig := make(chan os.Signal, 1)
+	signal.Notify(sig, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+
+	t := http.DefaultTransport.(*http.Transport).Clone()
+	t.MaxIdleConns = 100
+	t.MaxConnsPerHost = 100
+	t.MaxIdleConnsPerHost = 100
+	httpClient := &http.Client{
+		Timeout:   10 * time.Minute,
+		Transport: t,
+	}
+
+	s := http.Server{
+		Addr: ":50000",
+		Handler: &Proxy{
+			logger: logger,
+			client: httpClient,
+		},
+	}
 
 	go func() {
-		<-c
-		cancel()
+		logger.Info("proxy is serving")
+		if err := s.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			logger.Error("proxy failed to listen and serve", zap.Error(err))
+		}
 	}()
 
-	lis, err := net.Listen("tcp", ":8080")
-	if err != nil {
-		logger.Error("listen to 8080", zap.Error(err))
-	}
-	s := http.Server{Handler: &Handler{Logger: logger}}
-	logger.Info("proxy starts serving on 8080")
-	if err := s.Serve(lis); err != nil {
-		logger.Error("proxy serves", zap.Error(err))
-	}
-
-	<-ctx.Done()
-	_ = lis.Close()
+	<-sig
 	_ = s.Shutdown(context.Background())
 }
 
-type Handler struct {
-	*zap.Logger
+type Proxy struct {
+	logger *zap.Logger
+	client *http.Client
 }
 
-func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	h.Info("receive Datadog Agent request", zap.String("request_url", r.URL.String()))
-	defer r.Body.Close()
-	b, err := io.ReadAll(r.Body)
+func (p *Proxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	reqURL := fmt.Sprintf("https:%s", r.URL.String())
+	fields := []zap.Field{
+		zap.String("request_url", reqURL),
+		zap.Any("request_headers", r.Header),
+	}
+	u, err := url.Parse(reqURL)
 	if err != nil {
-		h.Error("read request body", zap.Error(err))
+		p.logger.Error("failed to parse request url", append(fields, zap.Error(err))...)
+		http.Error(w, "failed to parse request url", http.StatusInternalServerError)
 		return
 	}
-	h.Info("read request body", zap.String("body", string(b)))
-	w.WriteHeader(http.StatusBadGateway)
+	r, err = http.NewRequest(r.Method, u.String(), r.Body)
+	if err != nil {
+		p.logger.Error("failed to create new request", append(fields, zap.Error(err))...)
+		http.Error(w, "failed to create new request", http.StatusInternalServerError)
+		return
+	}
+	start := time.Now()
+	res, err := p.client.Do(r)
+	if err != nil {
+		p.logger.Error("proxy failed to do request", append(fields, zap.Error(err))...)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	elapsed := time.Since(start)
+	b, err := io.ReadAll(res.Body)
+	if err != nil {
+		p.logger.Warn("proxy failed to read response body", zap.Error(err))
+	}
+	p.logger.Info(
+		"receive Datadog Agent request",
+		append(
+			fields,
+			zap.Duration("elapsed", elapsed),
+			zap.Int("status_code", res.StatusCode),
+			zap.String("response_body", string(b)),
+		)...,
+	)
+	w.Write(b)
+	w.WriteHeader(http.StatusOK)
 }

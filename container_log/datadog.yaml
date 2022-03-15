@@ -1,3 +1,5 @@
 logs_enabled: true
 logs_config:
   container_collect_all: true
+
+cloud_provider_metadata: []

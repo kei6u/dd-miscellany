@@ -11,6 +11,11 @@ services:
       - ../.env
     networks:
       - default
+  flog:
+    image: mingrammer/flog
+    command: flog -l -d 500ms
+    networks:
+      - default
   proxy:
     build:
       context: .

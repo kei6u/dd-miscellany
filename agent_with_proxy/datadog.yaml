@@ -1,4 +1,4 @@
 proxy:
-  http: http://proxy:8080
-  https: http://proxy:8080
+  http: http://proxy:50000
+  https: http://proxy:50000
 logs_enabled: true
