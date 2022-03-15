@@ -19,8 +19,8 @@ func main() {
 			return
 		default:
 			time.Sleep(time.Second)
-			fmt.Fprintln(os.Stderr, "stderr")
-			fmt.Fprintln(os.Stderr, "stdout")
+			fmt.Fprintln(os.Stderr, "hello in stderr")
+			fmt.Fprintln(os.Stdout, "hello in stdout")
 		}
 	}
 }
