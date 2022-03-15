@@ -3,3 +3,4 @@ logs:
   - type: file
     path: /test/test.log
     service: test
+    source: test
