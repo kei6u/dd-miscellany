@@ -1,0 +1,13 @@
+instances:
+  - name: http://example.com
+    url: http://example.com
+    http_response_status_code: 200
+    timeout: 60
+    tls_verify: true
+    min_collection_interval: 60
+  - name: https://example.com
+    url: https://example.com
+    http_response_status_code: 200
+    timeout: 60
+    tls_verify: true
+    min_collection_interval: 60
