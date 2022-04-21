@@ -1,0 +1,112 @@
+logs_enabled: true
+logs_config:
+  container_collect_all: true
+
+otlp_config:
+  receiver:
+    protocols:
+        grpc:
+          endpoint: 0.0.0.0:30080
+        # http:
+          # endpoint: 0.0.0.0:4318
+
+  metrics:
+    enabled: true
+
+    ## @param resource_attributes_as_tags - boolean - optional - default: false
+    ## @env DD_OTLP_CONFIG_METRICS_RESOURCE_ATTRIBUTES_AS_TAGS - boolean - optional - default: false
+    ## Set to true to add all resource attributes of a metric to its metric tags.
+    ## When set to false, only a small predefined subset of resource attributes is converted
+    ## to metric tags.
+    #
+    # resource_attributes_as_tags: false
+
+    ## @param instrumentation_library_metadata_as_tags - boolean - optional - default: false
+    ## @env DD_OTLP_CONFIG_METRICS_INSTRUMENTATION_LIBRARY_METADATA_AS_TAGS - boolean - optional - default: false
+    ## Set to true to add metadata about the instrumentation library that created a metric.
+    #
+    # instrumentation_library_metadata_as_tags: false
+
+    ## @param tag_cardinality - string - optional - default: low
+    ## @env DD_OTLP_CONFIG_METRICS_TAG_CARDINALITY - string - optional - default: low
+    ## Configure the level of granularity of tags to send for OTLP metrics. Choices are:
+    ##   * low: add tags about low-cardinality objects (clusters, hosts, deployments, container images, ...)
+    ##   * orchestrator: add tags about pod, (in Kubernetes), or task (in ECS or Mesos) -level of cardinality
+    ##   * high: add tags about high-cardinality objects (individual containers, user IDs in requests, ...)
+    ## WARNING: sending container tags for checks metrics may create more metrics
+    ## (one per container instead of one per host). This may impact your custom metrics billing.
+    #
+    # tag_cardinality: low
+
+    ## @param report_quantiles - boolean - optional - default: true
+    ## @env DD_OTLP_CONFIG_METRICS_REPORT_QUANTILES - boolean - optional - default: true
+    ## DEPRECATED: [v7.36 / v6.36] Use `summaries.mode` instead. Will be removed in v7.37 / 6.36.
+    ## Whether to report quantile metrics for OTLP Summary points.
+    ## See https://docs.datadoghq.com/metrics/otlp/?tab=summary for more details.
+    #
+    # report_quantiles: true
+
+    ## @param send_monotonic_counter - boolean - optional - default: false
+    ## @env DD_OTLP_CONFIG_METRICS_SEND_MONOTONIC_COUNTER - boolean - optional - default: false
+    ## DEPRECATED: [v7.36] Use `sums.cumulative_monotonic_mode` instead. Will be removed in v7.37.
+    ## Whether to report monotonic metrics as counters or gauges (raw value).
+    ## See https://docs.datadoghq.com/integrations/guide/prometheus-metrics/#counter
+    ## for further details.
+    #
+    # send_monotonic_counter: true
+
+    ## @param delta_ttl - int - optional - default: 3600
+    ## @env DD_OTLP_CONFIG_METRICS_DELTA_TTL - int - optional - default: 3600
+    ## The amount of time (in seconds) that values are kept in memory for
+    ## calculating deltas for cumulative monotonic metrics.
+    #
+    # delta_ttl: 3600
+
+    ## @param histograms - custom object - optional
+    ## Configuration for OTLP Histograms.
+    ## See https://docs.datadoghq.com/metrics/otlp/?tab=histogram for details.
+    #
+    # histograms:
+
+      ## @param mode - string - optional - default: distributions
+      ## @env DD_OTLP_CONFIG_METRICS_HISTOGRAMS_MODE - string - optional - default: distributions
+      ## How to report histograms. Valid values are:
+      ##
+      ## - `distributions` to report metrics as Datadog distributions (recommended).
+      ## - `nobuckets` to not report bucket metrics,
+      ## - `counters` to report one metric per histogram bucket.
+      #
+      # mode: distributions
+
+      ## @param send_count_sum_metrics - boolean - optional - default: false
+      ## @env DD_OTLP_CONFIG_METRICS_HISTOGRAMS_SEND_COUNT_SUM_METRICS - boolean - optional - default: false
+      ## Whether to report sum and count as separate histogram metrics.
+      #
+      # send_count_sum_metrics: false
+
+    ## @param sums - custom object - optional
+    ## Configuration for OTLP Sums.
+    ## See https://docs.datadoghq.com/metrics/otlp/?tab=sum for details.
+        ## @param cumulative_monotonic_mode - string - optional - default: to_delta
+        ## @env DD_OTLP_CONFIG_METRICS_SUMS_CUMULATIVE_MONOTONIC_MODE - string - optional - default: to_delta
+        ## How to report cumulative monotonic sums. Valid values are:
+        ##
+        ## - `to_delta` to calculate delta for sum in the client side and report as Datadog counts.
+        ## - `raw_value` to report the raw value as a Datadog gauge.
+        #
+        # cumulative_monotonic_mode: to_delta
+
+    ## @param summaries - custom object - optional
+    ## Configuration for OTLP Summaries.
+    ## See https://docs.datadoghq.com/metrics/otlp/?tab=summary for more details.
+        ## @param mode - string - optional - default: gauges
+        ## @env DD_OTLP_CONFIG_METRICS_SUMMARIES_MODE - string - optional - default: gauges
+        ## How to report summaries. Valid values are:
+        ##
+        ## - `noquantiles` to not report quantile metrics.
+        ## - `gauges` to report one gauge metric per quantile.
+        #
+        # mode: gauges
+
+  traces:
+    enabled: true
