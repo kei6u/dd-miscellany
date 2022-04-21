@@ -24,7 +24,6 @@ import (
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
-	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -137,12 +136,6 @@ func main() {
 
 	// work begins
 	tracer := otel.Tracer("test-tracer")
-	ctx, span := tracer.Start(
-		ctx,
-		"CollectorExporter-Example",
-		trace.WithAttributes(commonLabels...),
-	)
-	defer span.End()
 	for {
 		select {
 		case <-ctx.Done():
