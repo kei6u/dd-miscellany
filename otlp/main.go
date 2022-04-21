@@ -4,6 +4,10 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math"
+	"math/rand"
+	"os"
+	"os/signal"
 	"time"
 
 	"go.opentelemetry.io/otel"
@@ -96,18 +100,32 @@ func initProvider() {
 	otel.SetTextMapPropagator(propagation.TraceContext{})
 }
 
+func fib(n uint) uint64 {
+	if n <= 1 {
+		return uint64(n)
+	}
+	var n2, n1 uint64 = 0, 1
+	for i := uint(2); i <= n; i++ {
+		n2, n1 = n1, n1+n2
+	}
+	return n2 + n1
+}
+
 func main() {
-	ctx := context.Background()
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer cancel()
+	rand.Seed(time.Now().UnixNano())
+	log.SetOutput(os.Stdout)
+
 	meter := global.Meter("test-meter")
-	workDuration, _ := meter.SyncInt64().UpDownCounter(
-		"otlp_client/work_duration",
-		instrument.WithDescription("The duration for a work in milliseconds"),
+	fibDuration, _ := meter.SyncInt64().UpDownCounter(
+		"otlp_client/fib_duration",
+		instrument.WithDescription("The duration for calculating a fibonacci number in milliseconds"),
+		instrument.WithUnit("ms"),
 	)
 
 	log.Printf("Initialize a provider ...")
 	initProvider()
-
-	tracer := otel.Tracer("test-tracer")
 
 	// labels represent additional key-value descriptors that can be bound to a
 	// metric observer or recorder.
@@ -118,21 +136,26 @@ func main() {
 	}
 
 	// work begins
+	tracer := otel.Tracer("test-tracer")
 	ctx, span := tracer.Start(
 		ctx,
 		"CollectorExporter-Example",
 		trace.WithAttributes(commonLabels...),
 	)
 	defer span.End()
-	limit := 100
-	for i := 0; i < limit; i++ {
+	for {
+		select {
+		case <-ctx.Done():
+			log.Printf("Done!")
+		default:
+		}
 		now := time.Now()
-		_, iSpan := tracer.Start(ctx, fmt.Sprintf("Sample-%d", i))
-		log.Printf("Doing really hard work (%d / %d)\n", i+1, limit)
-		workDuration.Add(ctx, time.Since(now).Milliseconds(), commonLabels...)
-		<-time.After(time.Second)
-		iSpan.End()
+		ui := uint(rand.Intn(200))
+		_, s := tracer.Start(ctx, fmt.Sprintf("fib-%d", ui))
+		f := fib(ui)
+		fibDuration.Add(ctx, time.Since(now).Milliseconds(), commonLabels...)
+		<-time.After(time.Duration(math.Sqrt(float64(f))))
+		log.Printf("fib(%d) = %d", ui, f)
+		s.End()
 	}
-
-	log.Printf("Done!")
 }
