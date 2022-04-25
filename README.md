@@ -1,6 +1,6 @@
 # DD Miscellany
 
-This repository is the collection of notes, instructions to use Datadog.
+This repository is the collection of notes, instructions to use Datadog for personal use. This is NOT intended for the references of Datadog.
 
 ## Dependency
 
@@ -11,11 +11,3 @@ This repository is the collection of notes, instructions to use Datadog.
 
 Any files or directories which starts with `test` will be ignored. See [.gitignore](./.gitignore).
 
-## Index
-
-- [agent directory](./agent_directory/README.md)
-- [agent mysql integration](./agent_mysql_integration/README.md)
-- [apm](./apm/README.md)
-- [custom agent check](./custom_agent_check/README.md)
-- [host agent log collection](./host_agent_log_collection/README.md)
-- [dogstatsd client](./dogstatsd_client/README.md)
