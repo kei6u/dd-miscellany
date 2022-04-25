@@ -9,5 +9,6 @@ This repository is the collection of notes, instructions to use Datadog for pers
 
 ## Notes
 
-Any files or directories which starts with `test` will be ignored. See [.gitignore](./.gitignore).
+- Any files or directories which starts with `test` will be ignored. See [.gitignore](./.gitignore).
+- Any `docker-compose.yaml` in this repository depends on `.env` file to get the API/APP key.
 
