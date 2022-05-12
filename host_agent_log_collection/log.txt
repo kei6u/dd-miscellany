@@ -1,4 +1,0 @@
-{ "duration": 200, "message": "test - 1", "http": { "url": "/1" } }
-{ "duration": 100, "message": "test - 2", "http": { "url": "/2" } }
-{ "duration": 375, "message": "test - 3", "http": { "url": "/3" } }
-{ "duration": 260, "message": "test - 4", "http": { "url": "/4" } }
