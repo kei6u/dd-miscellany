@@ -2,21 +2,16 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"log"
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/rs/xid"
 )
 
 func main() {
-	var message1 string
-	var message2 string
-	var message3 string
-	flag.StringVar(&message1, "message1", "message1", "")
-	flag.StringVar(&message2, "message2", "message2", "")
-	flag.StringVar(&message3, "message3", "message3", "")
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
 
@@ -33,11 +28,12 @@ func main() {
 			return
 		default:
 			now := time.Now().UnixMilli()
-			for _, m := range []string{message1, message2, message3} {
-				_, _ = f.WriteString(fmt.Sprintf(`{"message": %q, "timestamp": "%d"}`, m, now))
+			for i := 0; i < 2; i++ {
+				id := xid.New()
+				_, _ = f.WriteString(fmt.Sprintf(`{"message": %q, "timestamp": "%d"}`, id.String(), now))
 				_, _ = f.WriteString("\n")
-				nLines++
 			}
+			nLines++
 		}
 		time.Sleep(time.Second)
 	}
