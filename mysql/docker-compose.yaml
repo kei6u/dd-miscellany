@@ -1,0 +1,65 @@
+version: "3.9"
+services:
+  agent:
+    image: gcr.io/datadoghq/agent:7
+    volumes:
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /proc/:/host/proc/:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    env_file:
+      - ../.env
+    networks:
+      - default
+    depends_on:
+      - mysql
+  mysql:
+    image: bitnami/mysql:5.7
+    labels:
+      com.datadoghq.ad.check_names: '["mysql"]'
+      com.datadoghq.ad.init_configs: '[{}]'
+      com.datadoghq.ad.instances: >
+        [
+          {
+            "server": "%%host%%",
+            "username": "datadog",
+            "password": "password",
+            "port": 3306,
+            "custom_queries": [
+              {
+                "query": "select * from test.cols",
+                "columns": [
+                  {
+                    "name": "test.cols.col1",
+                    "type": "gauge"
+                  },
+                  {
+                    "name": "col2",
+                    "type": "tag"
+                  },
+                  {
+                    "name": "col3_tag",
+                    "type": "tag"
+                  }
+                ]
+              }
+            ],
+            "options": {
+              "replication": false,
+              "galera_cluster": true,
+              "extra_status_metrics": true,
+              "extra_innodb_metrics": true,
+              "extra_performance_metrics": true,
+              "schema_size_metrics": false,
+              "disable_innodb_metrics": false
+            }
+          }
+        ]
+    ports:
+      - 3306:3306
+    restart: always
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - default
