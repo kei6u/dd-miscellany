@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  agent:
+    image: gcr.io/datadoghq/agent:7
+    volumes:
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /proc/:/host/proc/:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    env_file:
+      - ../.env
+    depends_on:
+      - apache
+    networks:
+      - default
+  apache:
+    image: httpd:2.4.53
+    volumes:
+      - ./httpd.conf:/usr/local/apache2/conf/httpd.conf
+    labels:
+      com.datadoghq.ad.check_names: '["apache"]'
+      com.datadoghq.ad.init_configs: '[{}]'
+      com.datadoghq.ad.instances: >
+        [{
+          "apache_status_url": "http://%%host%%/server-status?auto"
+        }]
+    networks:
+      - default
