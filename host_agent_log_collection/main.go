@@ -15,7 +15,11 @@ func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
 
-	f, err := os.Create("test.log")
+	testLog1, err := os.Create("test.log.1")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	testLog2, err := os.Create("test.log.2")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -27,12 +31,10 @@ func main() {
 			fmt.Printf("wrote %d lines\n", nLines)
 			return
 		default:
-			now := time.Now().UnixMilli()
-			for i := 0; i < 2; i++ {
-				id := xid.New()
-				_, _ = f.WriteString(fmt.Sprintf(`{"message": %q, "timestamp": "%d"}`, id.String(), now))
-				_, _ = f.WriteString("\n")
-			}
+			_, _ = testLog1.WriteString(fmt.Sprintf(`{"message": "%s", "timestamp": "%d"}`, xid.New().String(), time.Now().UnixMilli()))
+			_, _ = testLog1.WriteString("\n")
+			_, _ = testLog2.WriteString(fmt.Sprintf(`{"message": "%s", "timestamp": "%d"}`, xid.New().String(), time.Now().UnixMilli()))
+			_, _ = testLog2.WriteString("\n")
 			nLines++
 		}
 		time.Sleep(time.Second)

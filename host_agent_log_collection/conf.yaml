@@ -1,10 +1,14 @@
 # see: https://docs.datadoghq.com/agent/logs/?tab=tailfiles#custom-log-collection
 logs:
   - type: file
-    path: /test/test.log
-    service: test
-    source: test
+    path: /test/test.log.1
+    service: test1
+    source: test1
     tags:
       - key1:value1
       - key2:value2
       - key3:value3
+  - type: file
+    path: /test/test.log.2
+    service: test2
+    source: test2

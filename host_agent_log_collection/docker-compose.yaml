@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  datadog-agent:
+    image: gcr.io/datadoghq/agent:7
+    volumes:
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /proc/:/host/proc/:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./test.log.1:/test/test.log.1
+      - ./test.log.2:/test/test.log.2
+      - ./conf.yaml:/conf.d/test.d/conf.yaml
+    environment:
+      DD_LOGS_ENABLED: true
+    env_file:
+      - ../.env
+    networks:
+      - default
