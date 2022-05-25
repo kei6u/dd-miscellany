@@ -20,7 +20,7 @@ docker run -d --name dd-agent \
 -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
 -v $(pwd)/test.log:/test/test.log \
 -v $(pwd)/conf.yaml:/conf.d/test.d/conf.yaml \
--v $(pwd)/datadog.yaml:/etc/datadog-agent/datadog.yaml \
+-e DD_LOGS_ENABLED=true \
 -e DD_API_KEY=${DD_API_KEY} \
 gcr.io/datadoghq/agent:7
 ```
