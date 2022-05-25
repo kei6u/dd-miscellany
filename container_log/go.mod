@@ -1,3 +1,3 @@
 module github.com/keisku/dd-miscellany/container_log
 
-go 1.17
+go 1.18
