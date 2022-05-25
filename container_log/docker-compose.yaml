@@ -13,13 +13,11 @@ services:
       - ../.env
     networks:
       - default
-  app:
+  flog:
     labels:
       # https://docs.datadoghq.com/agent/docker/log/?tab=dockercompose#log-integrations
-      com.datadoghq.ad.logs: '[{"source": "std_logger", "service": "std_logger"}]'
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: always
+      com.datadoghq.ad.logs: '[{"source": "flog", "service": "flog"}]'
+    image: mingrammer/flog
+    command: flog -l -d 500ms
     networks:
       - default
