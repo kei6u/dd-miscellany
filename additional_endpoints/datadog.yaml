@@ -1,6 +1,0 @@
-logs_enabled: true
-logs_config:
-  container_collect_all: true
-additional_endpoints:
-  "http://logger:50000":
-    - fakeapikey
