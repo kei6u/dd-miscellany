@@ -24,8 +24,7 @@ func main() {
 	)
 	defer tracer.Stop()
 
-	signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
 
 	go generateSpan(ctx, logger, "gopher1", "custom")
