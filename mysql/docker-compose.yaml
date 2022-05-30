@@ -13,7 +13,7 @@ services:
     depends_on:
       - mysql
   mysql:
-    image: bitnami/mysql:5.7
+    image: mysql:5.7
     labels:
       com.datadoghq.ad.check_names: '["mysql"]'
       com.datadoghq.ad.init_configs: '[{}]'
@@ -58,8 +58,9 @@ services:
       - 3306:3306
     restart: always
     environment:
-      ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_ROOT_PASSWORD: password
     volumes:
+      - ./data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - default

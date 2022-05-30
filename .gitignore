@@ -3,3 +3,4 @@ test**
 **.crt
 **.key
 _playground
+mysql/data
