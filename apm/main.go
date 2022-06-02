@@ -2,8 +2,7 @@ package main
 
 import (
 	"context"
-	"crypto/sha512"
-	"errors"
+	"crypto/sha256"
 	"fmt"
 	"math/rand"
 	"os"
@@ -44,12 +43,12 @@ func generateSpanForever(ctx context.Context, logger *zap.Logger, name, spanType
 			return
 		case t := <-spanGenTicker.C:
 			span := tracer.StartSpan(name, tracer.SpanType(spanType))
-			h := sha512.Sum512([]byte(t.String()))
-			logger.Info(fmt.Sprintf("generate a span with a sha512 hashed timestamp(%x)", h), zap.Uint64("dd.span_id", span.Context().SpanID()), zap.Uint64("dd.trace_id", span.Context().TraceID()))
+			h := sha256.Sum256([]byte(t.String()))
+			logger.Info(fmt.Sprintf("generate a span with a sha256 hashed timestamp(%x)", h), zap.Uint64("dd.span_id", span.Context().SpanID()), zap.Uint64("dd.trace_id", span.Context().TraceID()))
 			span.Finish()
 		case <-errGenTicker.C:
 			span := tracer.StartSpan(name, tracer.SpanType(spanType))
-			err := errors.New("generate an error span")
+			err := fmt.Errorf("generate an error span with a sha256 hashed timestamp(%x)", h)
 			logger.Error(err.Error(), zap.Uint64("dd.span_id", span.Context().SpanID()), zap.Uint64("dd.trace_id", span.Context().TraceID()))
 			span.Finish(tracer.WithError(err))
 		}
