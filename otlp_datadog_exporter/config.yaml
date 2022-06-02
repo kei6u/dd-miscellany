@@ -1,0 +1,21 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+exporters:
+  datadog:
+    api:
+      key: "${DD_API_KEY}"
+      fail_on_invalid_key: "true"
+  logging:
+    loglevel: debug
+    sampling_initial: 5
+    sampling_thereafter: 200
+service:
+  pipelines:
+    metrics/2:
+      receivers: [otlp]
+      exporters: [datadog, logging]
+    traces/2:
+      receivers: [otlp]
+      exporters: [datadog, logging]

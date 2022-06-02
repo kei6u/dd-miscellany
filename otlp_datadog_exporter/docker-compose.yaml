@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  collector:
+    image: otel/opentelemetry-collector-contrib:0.52.0
+    volumes:
+      - ./config.yaml:/config.yaml
+    command: ["--config=/config.yaml"]
+    env_file:
+      - ../.env
+    networks:
+      - default
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - OTLP_GRPC_ADDR=collector:4317
+    restart: always
+    networks:
+      - default
