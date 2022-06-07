@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  datadog-agent:
+    image: gcr.io/datadoghq/agent:7
+    volumes:
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /proc/:/host/proc/:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    env_file:
+      - ../.env
+    networks:
+      - default
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - default
+    labels:
+      com.datadoghq.ad.check_names: '["openmetrics"]'
+      com.datadoghq.ad.init_configs: '[{}]'
+      com.datadoghq.ad.instances: |
+        [
+          {
+            "openmetrics_endpoint": "http://%%host%%:8080/metrics",
+            "namespace": "ddmisc_openmetrics",
+            "metrics": [
+              {"golang_my_counter": "my_counter"},
+              {"golang_my_gauge": "my_gauge"},
+              {"golang_my_histogram": "my_histogram"},
+              {"golang_my_summary": "my_summary"}
+            ]
+          }
+        ]
