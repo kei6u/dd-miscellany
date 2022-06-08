@@ -52,6 +52,18 @@ func main() {
 	rand.Seed(time.Now().Unix())
 
 	http.Handle("/metrics", promhttp.Handler())
+	// RemoteDisconnected exception will occur in the Datadog Agent side.
+	http.Handle("/remote_disconnected", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if wr, ok := w.(http.Hijacker); ok {
+			conn, _, err := wr.Hijack()
+			if err != nil {
+				log.Printf("Error hijacking connection: %v", err)
+				return
+			}
+			log.Println("Hijacked connection and close it")
+			conn.Close()
+		}
+	}))
 	prometheus.MustRegister(counter)
 	prometheus.MustRegister(gauge)
 	prometheus.MustRegister(histogram)
