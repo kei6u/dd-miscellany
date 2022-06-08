@@ -26,12 +26,12 @@ services:
         [
           {
             "openmetrics_endpoint": "http://%%host%%:8080/metrics",
-            "namespace": "ddmisc_openmetrics",
+            "namespace": "ddmisc",
             "metrics": [
-              {"golang_my_counter": "my_counter"},
-              {"golang_my_gauge": "my_gauge"},
-              {"golang_my_histogram": "my_histogram"},
-              {"golang_my_summary": "my_summary"}
+              {"golang_my_counter": "my_openmetrics_counter"},
+              {"golang_my_gauge": "my_openmetrics_gauge"},
+              {"golang_my_histogram": "my_openmetrics_histogram"},
+              {"golang_my_summary": "my_openmetrics_summary"}
             ]
           }
         ]
