@@ -48,7 +48,7 @@ func generateSpanForever(ctx context.Context, logger *zap.Logger, name, spanType
 			span.Finish()
 		case <-errGenTicker.C:
 			span := tracer.StartSpan(name, tracer.SpanType(spanType))
-			err := fmt.Errorf("generate an error span with a sha256 hashed timestamp(%x)", h)
+			err := fmt.Errorf("generate an error span")
 			logger.Error(err.Error(), zap.Uint64("dd.span_id", span.Context().SpanID()), zap.Uint64("dd.trace_id", span.Context().TraceID()))
 			span.Finish(tracer.WithError(err))
 		}
