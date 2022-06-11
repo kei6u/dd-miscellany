@@ -7,8 +7,10 @@ ddmisc is the collection of exampls of Datadog for PERSONAL use.
 - [Go](https://github.com/golang/go) to run scripts. [Installation guide](https://go.dev/doc/install).
 - [Docker](https://www.docker.com/) to run containers. [Installation guide](https://docs.docker.com/get-docker/).
 
-## Notes
+## Guide
 
-- Any files or directories which starts with `test` will be ignored. See [.gitignore](./.gitignore).
-- Any `docker-compose.yaml` in this repository depends on `.env` file to get the API/APP key.
+After cloning this repository, run this command to configure API/APP keys for Datadog.
 
+```bash
+cp .env.example .env
+```
