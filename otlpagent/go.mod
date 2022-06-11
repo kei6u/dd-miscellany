@@ -1,4 +1,4 @@
-module github.com/keisku/dd-miscellany/otlp
+module github.com/keisku/ddmisc/otlpagent
 
 go 1.18
 

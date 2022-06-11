@@ -1,7 +1,0 @@
-enable_payloads:
-  series: false
-  events: false
-  service_checks: false
-  sketches: false
-logs_enabled: true
-log_level: DEBUG

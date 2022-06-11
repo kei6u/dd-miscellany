@@ -1,8 +1,0 @@
-logs_enabled: true
-logs_config:
-  container_collect_all: true
-  additional_endpoints:
-    api_key: localhost_api_key
-    host: logger
-    port: 50000
-    use_compression: true
