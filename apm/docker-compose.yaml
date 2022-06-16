@@ -7,6 +7,7 @@ services:
       DD_APM_NON_LOCAL_TRAFFIC: true
       DD_LOGS_ENABLED: true
       DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL: true
+      # DD_APM_MAX_TPS: 3 # see: https://docs.datadoghq.com/tracing/trace_ingestion/mechanisms/?tab=environmentvariables#in-the-agent
     volumes:
       - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
       - /proc/:/host/proc/:ro
@@ -25,5 +26,10 @@ services:
       DD_TRACE_AGENT_PORT: 8126
       DD_ENV: docker-desktop
       DD_SERVICE: span-generator
+      # DD_TRACE_SAMPLE_RATE: 0.5 # see: https://docs.datadoghq.com/tracing/trace_ingestion/mechanisms/?tab=environmentvariables#in-tracing-libraries-user-defined-rules
+      SPAN_GENERATOR_INTERVAL_MAX_MS: 1000
+      SPAN_GENERATOR_INTERVAL_MIN_MS: 10000
+      ERROR_SPAN_GENERATOR_INTERVAL_MAX_MS: 1000
+      ERROR_SPAN_GENERATOR_INTERVAL_MIN_MS: 30000
     networks:
       - default

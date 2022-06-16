@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -20,23 +21,34 @@ func main() {
 
 	tracer.Start(
 		tracer.WithAgentAddr("datadog-agent:8126"),
-		tracer.WithAnalyticsRate(1.0),
 		tracer.WithLogStartup(true),
+		tracer.WithDebugMode(true),
 	)
 	defer tracer.Stop()
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
 
-	go generateSpanForever(ctx, logger, "span-generator", "custom")
+	go generateSpanForever(
+		ctx,
+		logger,
+		"span-generator",
+		"custom",
+	)
 
 	<-ctx.Done()
 	logger.Info("span-generator stops, bye~")
 }
 
 func generateSpanForever(ctx context.Context, logger *zap.Logger, name, spanType string) {
-	spanGenTicker := NewRandomTicker(3*time.Second, time.Second*10)
-	errGenTicker := NewRandomTicker(10*time.Second, time.Minute)
+	spanGenTicker := NewRandomTicker(
+		time.Millisecond*time.Duration(envVarToInt64("SPAN_GENERATOR_INTERVAL_MAX_MS", 1000)),
+		time.Millisecond*time.Duration(envVarToInt64("SPAN_GENERATOR_INTERVAL_MIN_MS", 10000)),
+	)
+	errGenTicker := NewRandomTicker(
+		time.Millisecond*time.Duration(envVarToInt64("ERROR_SPAN_GENERATOR_INTERVAL_MAX_MS", 1000)),
+		time.Millisecond*time.Duration(envVarToInt64("ERROR_SPAN_GENERATOR_INTERVAL_MIN_MS", 30000)),
+	)
 	for {
 		select {
 		case <-ctx.Done():
@@ -53,6 +65,15 @@ func generateSpanForever(ctx context.Context, logger *zap.Logger, name, spanType
 			span.Finish(tracer.WithError(err))
 		}
 	}
+}
+
+func envVarToInt64(name string, fallback int64) int64 {
+	if v := os.Getenv(name); v != "" {
+		if i, err := strconv.ParseInt(v, 10, 64); err == nil {
+			return i
+		}
+	}
+	return fallback
 }
 
 // RandomTicker is similar to time.Ticker but ticks at random intervals between
