@@ -16,7 +16,7 @@ services:
   flog:
     labels:
       # https://docs.datadoghq.com/agent/docker/log/?tab=dockercompose#log-integrations
-      com.datadoghq.ad.logs: '[{"source": "flog", "service": "flog"}]'
+      com.datadoghq.ad.logs: '[{"source": "my_source", "service": "my_service"}]'
     image: mingrammer/flog
     command: flog -l -d 500ms
     networks:
