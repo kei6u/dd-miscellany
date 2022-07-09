@@ -2,13 +2,16 @@
 logs:
   - type: file
     path: /test/test.log.1
-    service: test1
-    source: test1
+    service: test
+    source: test
     tags:
+      - env:1
       - key1:value1
       - key2:value2
       - key3:value3
   - type: file
     path: /test/test.log.2
-    service: test2
-    source: test2
+    service: test
+    source: test
+    tags:
+      - env:2
