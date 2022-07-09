@@ -70,7 +70,7 @@ func main() {
 						Ddsource: datadog.PtrString("go"),
 						Ddtags:   datadog.PtrString(fmt.Sprintf("env:local,level:info,breed:%s", breed)),
 						Hostname: datadog.PtrString(host),
-						Message:  datadog.PtrString(fmt.Sprintf("%s bow wow", breed)),
+						Message:  fmt.Sprintf("%s bow wow", breed),
 						Service:  datadog.PtrString("dog_dialog"),
 					},
 				})
