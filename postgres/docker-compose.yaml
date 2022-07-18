@@ -1,0 +1,58 @@
+version: "3.9"
+services:
+  agent:
+    image: gcr.io/datadoghq/agent:7
+    volumes:
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /proc/:/host/proc/:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    env_file:
+      - ../.env
+    networks:
+      - default
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:latest
+    labels:
+      com.datadoghq.ad.check_names: '["postgres"]'
+      com.datadoghq.ad.init_configs: '[{}]'
+      com.datadoghq.ad.instances: >
+        [
+          {
+            "host": "%%host%%",
+            "username": "datadog",
+            "password": "datadog",
+            "port": 5432,
+            "custom_queries": [
+              {
+                "query": "select * from test.cols",
+                "columns": [
+                  {
+                    "name": "test.cols.col1",
+                    "type": "gauge"
+                  },
+                  {
+                    "name": "col2",
+                    "type": "tag"
+                  },
+                  {
+                    "name": "col3_tag",
+                    "type": "tag"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: datadog
+      POSTGRES_USER: datadog
+      POSTGRES_DB: datadog
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - default
